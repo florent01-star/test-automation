@@ -73,7 +73,7 @@ npx playwright test && npx playwright show-report
 ## 🧪 Scénarios couverts
 
 - **Configuration d'un ordinateur** (data-driven via `Plan du scénario` / `Exemples`) :
-  - Prix correct du PC configuré dans le panier (profils *cheap* / *normal*)
+  - Prix correct du PC configuré dans le panier (profils _cheap_ / _normal_)
   - Suppléments RAM répercutés dans le sous-total
   - Options software payantes répercutées dans le sous-total
 - Authentification (inscription / connexion)
@@ -81,12 +81,12 @@ npx playwright test && npx playwright show-report
 
 ## 🛠️ Stack
 
-| Outil | Rôle |
-|---|---|
-| Playwright | Framework de test E2E |
-| playwright-bdd | Gherkin (.feature) → specs Playwright |
-| TypeScript | Typage des steps et POM |
-| POM | Abstraction des pages (sélecteurs centralisés) |
+| Outil          | Rôle                                           |
+| -------------- | ---------------------------------------------- |
+| Playwright     | Framework de test E2E                          |
+| playwright-bdd | Gherkin (.feature) → specs Playwright          |
+| TypeScript     | Typage des steps et POM                        |
+| POM            | Abstraction des pages (sélecteurs centralisés) |
 
 ## 📌 Conventions
 

@@ -1,7 +1,7 @@
 Fonctionnalité: Configuration d'un ordinateur classique
 
   Contexte:
-    Etant donné que je suis sur la page "Build your own computer"
+    Etant donné que je suis sur la page computer
 
   Plan du scénario: Le PC configuré est correct dans le panier
     Quand je configure l'ordinateur avec:

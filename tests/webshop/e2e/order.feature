@@ -1,4 +1,5 @@
 # language: fr
+@mode:serial
 Fonctionnalité: Commande
 
   Contexte:
@@ -23,7 +24,7 @@ Fonctionnalité: Commande
     Et le statut de la commande est "Pending"
 
   Scénario: Commander en étant déjà connecté avec une adresse sauvegardée
-    Etant donné que je suis connecté avec l'email "testflorent2@gmail.com" et le mot de passe "Tosca1234!"
+    Etant donné que je suis connecté avec mail et mot de passe
     Et que je supprime tous les articles du panier
     Et que j'ai 10 article "Blue Jeans" dans mon panier
     Et que je suis sur la page du panier
@@ -39,7 +40,7 @@ Fonctionnalité: Commande
     Et le statut de la commande est "Pending"
 
   Scénario: Commander en étant connecté et en ayant un code de réduction 
-    Etant donné que je suis connecté avec l'email "testflorent2@gmail.com" et le mot de passe "Tosca1234!"
+    Etant donné que je suis connecté avec mail et mot de passe
     Et que je supprime tous les articles du panier
     Et que j'ai 10 article "Blue Jeans" dans mon panier
     Et que je suis sur la page du panier
@@ -59,7 +60,7 @@ Fonctionnalité: Commande
     Et le statut de la commande est "Pending"
 
   Scénario: Commander en étant connecté sans adresse sauvegardée
-    Etant donné que je suis connecté avec l'email "testflorent16@gmail.com" et le mot de passe "password"
+    Etant donné que je suis connecté sans adresse sauvegardée
     Et que ce compte n'a aucune adresse sauvegardée
     Et que je supprime tous les articles du panier
     Et que j'ai 10 article "Blue Jeans" dans mon panier

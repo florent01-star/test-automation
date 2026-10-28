@@ -1,4 +1,4 @@
-import { test, expect, Given, When, Then } from './fixtures';
+import { expect, When, Then } from './fixtures';
 // Rappel : les écrans "Payment Information" diffèrent selon le moyen de paiement :
 //  - Check / Money Order, Cash On Delivery : simple texte d'information
 //  - Credit Card : formulaire carte
@@ -30,22 +30,17 @@ When('je renseigne le code de sécurité {string}', async ({ page }, code: strin
   await page.locator('#CardCode').fill(code);
 });
 
-Then(
-  "un message d'erreur concernant le numéro de carte est affiché",
-  async ({ page }) => {
-    // Erreur de validation à l'étape Payment Information
-  await expect(
-      page.getByText(/wrong card number/i),
-    ).toBeVisible();
-  },
-);
+Then("un message d'erreur concernant le numéro de carte est affiché", async ({ page }) => {
+  // Erreur de validation à l'étape Payment Information
+  await expect(page.getByText(/wrong card number/i)).toBeVisible();
+});
 
 Then('je ne peux pas confirmer la commande', async ({ page }) => {
   // L'étape "Confirm Order" ne s'est pas ouverte : le bouton Confirm n'est pas visible
-  await expect(page.locator('#confirm-order-buttons-container input.confirm-order-next-step-button')).toBeHidden();
+  await expect(
+    page.locator('#confirm-order-buttons-container input.confirm-order-next-step-button'),
+  ).toBeHidden();
 });
-
-
 
 Then(
   "un message d'erreur concernant le numéro de bon de commande est affiché",

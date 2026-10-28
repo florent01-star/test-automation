@@ -15,7 +15,7 @@ Fonctionnalité: Inscription d'un utilisateur
       | Female | Elo    | Novembre | password |
 
   Scénario: Inscription avec un email déjà utilisé
-    Etant donné qu'un compte existe avec l'email 'testflorent2@gmail.com'
+    Etant donné qu'un compte existe
     Quand je m'inscris avec l'email 'testflorent2@gmail.com'
     Alors le message d'erreur 'The specified email already exists' est affiché en rouge
 

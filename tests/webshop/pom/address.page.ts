@@ -2,7 +2,7 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export class AddressPage {
   readonly page: Page;
-  readonly emailLink: Locator;          // le lien = l'email dans le header
+  readonly emailLink: Locator; // le lien = l'email dans le header
   readonly addressesLink: Locator;
   readonly noAddressesMessage: Locator;
   readonly deleteButtons: Locator;
@@ -31,27 +31,25 @@ export class AddressPage {
   }
 
   async deleteFirst() {
-  const deleteButton = this.page.getByRole('button', { name: 'Delete' }).first();
+    const deleteButton = this.page.getByRole('button', { name: 'Delete' }).first();
 
-  const dialogAccepted = this.page
-    .waitForEvent('dialog')
-    .then((dialog) => dialog.accept());
+    const dialogAccepted = this.page.waitForEvent('dialog').then((dialog) => dialog.accept());
 
-  await deleteButton.click();
-  await dialogAccepted;
+    await deleteButton.click();
+    await dialogAccepted;
 
-  // la suppression fait une navigation vers /customer/addressdelete/...
-  await this.page.waitForLoadState('networkidle');
-}
-
-async deleteAll() {
-  // Tant qu'il reste des adresses, on en supprime une
-  while ((await this.deleteButtons.count()) > 0) {
-    await this.deleteFirst();
-    await this.page.reload();
+    // la suppression fait une navigation vers /customer/addressdelete/...
     await this.page.waitForLoadState('networkidle');
   }
-  // Fini : plus aucun bouton Delete → le message doit être visible
-  await expect(this.noAddressesMessage).toBeVisible();
-}
+
+  async deleteAll() {
+    // Tant qu'il reste des adresses, on en supprime une
+    while ((await this.deleteButtons.count()) > 0) {
+      await this.deleteFirst();
+      await this.page.reload();
+      await this.page.waitForLoadState('networkidle');
+    }
+    // Fini : plus aucun bouton Delete → le message doit être visible
+    await expect(this.noAddressesMessage).toBeVisible();
+  }
 }

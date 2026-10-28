@@ -14,7 +14,7 @@ export class OrderDetailsPage {
   readonly discount: Locator;
 
   totalRow(label: string): Locator {
-  return this.page.locator('.cart-total tr', { hasText: label }).locator('.cart-total-right');
+    return this.page.locator('.cart-total tr', { hasText: label }).locator('.cart-total-right');
   }
 
   constructor(page: Page) {
@@ -24,14 +24,18 @@ export class OrderDetailsPage {
     this.orderStatus = page.getByText(/Order Status/i);
     this.orderTotal = page.locator('.order-overview').getByText(/Order Total/i);
     this.paymentMethod = page
-      .locator('.payment-method-info .payment-method .value, .payment-method-info .payment-method, .payment-method')
+      .locator(
+        '.payment-method-info .payment-method .value, .payment-method-info .payment-method, .payment-method',
+      )
       .first();
     this.shippingMethod = page
-      .locator('.shipping-method-info .shipping-method .value, .shipping-method-info .shipping-method, .shipping-method')
+      .locator(
+        '.shipping-method-info .shipping-method .value, .shipping-method-info .shipping-method, .shipping-method',
+      )
       .first();
     this.products = page.locator('.data-table tbody tr');
     this.subTotal = this.totalRow('Sub-Total');
-    this.discount = this.totalRow('Discount');;
+    this.discount = this.totalRow('Discount');
   }
 
   /** Ligne produit du tableau filtrée par nom */

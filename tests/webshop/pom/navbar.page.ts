@@ -1,8 +1,13 @@
 import { Page, Locator } from '@playwright/test';
 
 export type Category =
-  | 'Books' | 'Computers' | 'Electronics' | 'Apparel & Shoes'
-  | 'Digital downloads' | 'Jewelry' | 'Gift Cards';
+  | 'Books'
+  | 'Computers'
+  | 'Electronics'
+  | 'Apparel & Shoes'
+  | 'Digital downloads'
+  | 'Jewelry'
+  | 'Gift Cards';
 
 export class NavBar {
   readonly page: Page;

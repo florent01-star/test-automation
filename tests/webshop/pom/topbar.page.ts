@@ -6,7 +6,7 @@ export class TopBar {
   readonly registerLink: Locator;
   readonly loginLink: Locator;
   readonly logoutLink: Locator;
-  readonly accountLink: Locator;   // affiche l'email quand connecté
+  readonly accountLink: Locator; // affiche l'email quand connecté
   readonly cartLink: Locator;
   readonly wishlistLink: Locator;
   readonly searchInput: Locator;
@@ -42,10 +42,18 @@ export class TopBar {
     return this.extractCount(this.wishlistLink.locator('.wishlist-qty'));
   }
 
-  async goToRegister() { await this.registerLink.click(); }
-  async goToLogin()    { await this.loginLink.click(); }
-  async goToCart()     { await this.cartLink.click(); }
-  async logout()       { await this.logoutLink.click(); }
+  async goToRegister() {
+    await this.registerLink.click();
+  }
+  async goToLogin() {
+    await this.loginLink.click();
+  }
+  async goToCart() {
+    await this.cartLink.click();
+  }
+  async logout() {
+    await this.logoutLink.click();
+  }
 
   async search(term: string) {
     await this.searchInput.fill(term);

@@ -4,7 +4,6 @@ import { createBdd } from 'playwright-bdd';
 import { AccueilPage } from '../pom/accueil.page';
 import { RegisterPage } from '../pom/register.page';
 import { LoginPage } from '../pom/login.page';
-import { BuildComputerPage } from '../pom/build-computer.page';
 import { ComputerPage } from '../pom/computer.page';
 import { AddressPage } from '../pom/address.page';
 import { DesktopsPage } from '../pom/desktop.page';
@@ -36,11 +35,10 @@ type Fixtures = {
   accueilPage: AccueilPage;
   registerPage: RegisterPage;
   loginPage: LoginPage;
-  buildComputerPage: BuildComputerPage;
   computerPage: ComputerPage;
   desktopsPage: DesktopsPage;
   cartPage: CartPage;
-  addressPage : AddressPage
+  addressPage: AddressPage;
   topBar: TopBar;
   navBar: NavBar;
   productPage: ProductDetailsPage;
@@ -55,7 +53,6 @@ export const test = base.extend<Fixtures>({
   accueilPage: async ({ page }, use) => use(new AccueilPage(page)),
   registerPage: async ({ page }, use) => use(new RegisterPage(page)),
   loginPage: async ({ page }, use) => use(new LoginPage(page)),
-  buildComputerPage: async ({ page }, use) => use(new BuildComputerPage(page)),
   computerPage: async ({ page }, use) => use(new ComputerPage(page)),
   desktopsPage: async ({ page }, use) => use(new DesktopsPage(page)),
   cartPage: async ({ page }, use) => use(new CartPage(page)),
@@ -67,10 +64,11 @@ export const test = base.extend<Fixtures>({
   completedPage: async ({ page }, use) => use(new CheckoutCompletedPage(page)),
   ordersPage: async ({ page }, use) => use(new OrdersPage(page)),
   orderDetailsPage: async ({ page }, use) => use(new OrderDetailsPage(page)),
-  state: async ({}, use) => use({
-    chosenOptions: [],
-    savedSubTotal: '',
-  }),
+  state: async ({}, use) =>
+    use({
+      chosenOptions: [],
+      savedSubTotal: '',
+    }),
 });
 
 export const { Given, When, Then } = createBdd(test);

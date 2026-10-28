@@ -1,4 +1,4 @@
-import { test, expect, Given, When, Then } from './fixtures';
+import { expect, Given, When, Then } from './fixtures';
 import { parseAmount, fmt } from './helpers/amount';
 import { Page } from '@playwright/test';
 
@@ -66,9 +66,7 @@ Then(
     const rawTotal = (await cartPage.total.textContent()) ?? '';
 
     const subTotal = parseAmount(rawSubTotal);
-    const total = rawTotal.includes('Calculated during checkout')
-      ? null
-      : parseAmount(rawTotal);
+    const total = rawTotal.includes('Calculated during checkout') ? null : parseAmount(rawTotal);
 
     const reference = state.initialSubTotal ?? subTotal;
 
@@ -106,7 +104,9 @@ When('je saisis le code postal {string}', async ({ cartPage }, zip: string) => {
 });
 
 Then('les options de livraison sont affichées avec leur coût', async ({ page }) => {
-  const options = page.locator('.shipping-results li, .shipping-option, .estimate-shipping-popup li');
+  const options = page.locator(
+    '.shipping-results li, .shipping-option, .estimate-shipping-popup li',
+  );
   await expect(options.first()).toBeVisible();
   await expect(options.first()).toContainText(/\d+\.\d{2}/);
 });
@@ -135,15 +135,18 @@ async function addProductToCart(page: Page, name: string, qty: number) {
   await expect(page.locator('.bar-notification.success')).toBeVisible();
 }
 
-Given('j\'ai {int} article {string} dans mon panier', async ({ page }, qty: number, name: string) => {
-  await addProductToCart(page, name, qty);
-});
+Given(
+  "j'ai {int} article {string} dans mon panier",
+  async ({ page }, qty: number, name: string) => {
+    await addProductToCart(page, name, qty);
+  },
+);
 
-Given('j\'ai {int} article dans mon panier', async ({ page }, qty: number) => {
+Given("j'ai {int} article dans mon panier", async ({ page }, qty: number) => {
   await addProductToCart(page, 'Black & White Diamond Heart', qty);
 });
 
-Given('j\'ai {int} articles différents dans mon panier', async ({ page }, count: number) => {
+Given("j'ai {int} articles différents dans mon panier", async ({ page }, count: number) => {
   const products = ['Blue Jeans', 'Casual Golf Belt', 'Black & White Diamond Heart'];
   for (const p of products.slice(0, count)) {
     await addProductToCart(page, p, 1);

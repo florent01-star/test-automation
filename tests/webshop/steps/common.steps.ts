@@ -1,8 +1,7 @@
-import { test, expect, Given, When, Then } from './fixtures';
-import { emptyCart, addProduct, fillCartWithDifferentProducts } from './helpers/shopping';
-import { parseAmount } from './helpers/amount';
+import { expect, Given, When, Then } from './fixtures';
+import { addProduct, fillCartWithDifferentProducts } from './helpers/shopping';
+import { USER, USER2 } from './helpers/env';
 
-const PASSWORD = 'Tosca1234!';
 
 // ---------- Navigation ----------
 Given("je suis sur la page d'accueil", async ({ accueilPage }) => {
@@ -23,16 +22,18 @@ When("je choisis de commander en tant qu'invité", async ({ page }) => {
   await expect(page).toHaveURL(/onepagecheckout/);
 });
 
-
 // ---------- Connexion ----------
-Given('que je suis connecté en tant que {string}', async ({ loginPage, topBar, state }, email: string) => {
-  await loginPage.goto();
-  await loginPage.login(email, PASSWORD);
-  await expect(topBar.logoutLink).toBeVisible();
-  state.lastEmail = email;
-});
+Given(
+  'que je suis connecté en tant que {string}',
+  async ({ loginPage, topBar, state }, email: string) => {
+    await loginPage.goto();
+    await loginPage.login(email, USER.password);
+    await expect(topBar.logoutLink).toBeVisible();
+    state.lastEmail = email;
+  },
+);
 
-Then("ce compte n'a aucune adresse sauvegardée", async ({ addressPage  }) => {
+Then("ce compte n'a aucune adresse sauvegardée", async ({ addressPage }) => {
   await addressPage.open();
   await addressPage.deleteAll();
 });
@@ -44,12 +45,9 @@ Given(
   },
 );
 
-Given(
-  /^que j'ai (\d+) articles? différents? dans mon panier$/,
-  async ({ page }, count: string) => {
-    await fillCartWithDifferentProducts(page, Number(count));
-  },
-);
+Given(/^que j'ai (\d+) articles? différents? dans mon panier$/, async ({ page }, count: string) => {
+  await fillCartWithDifferentProducts(page, Number(count));
+});
 
 Given(/^que j'ai (\d+) articles? dans mon panier$/, async ({ page }, count: string) => {
   await fillCartWithDifferentProducts(page, Number(count));
@@ -95,15 +93,12 @@ Then('le message {string} est affiché', async ({ page }, message: string) => {
   await expect(page.getByText(message, { exact: false }).first()).toBeVisible();
 });
 
-Then(
-  /^le message d'erreur '(.+)' est affiché en rouge$/,
-  async ({ page }, message: string) => {
-    const error = page.getByText(message, { exact: false }).first();
-    await expect(error).toBeVisible();
-    // Rouge nopCommerce : rgb(228, 67, 75) pour .field-validation-error / .validation-summary-errors
-    await expect(error).toHaveCSS('color', /rgb\(2[0-9]{2}, \d+, \d+\)/);
-  },
-);
+Then(/^le message d'erreur '(.+)' est affiché en rouge$/, async ({ page }, message: string) => {
+  const error = page.getByText(message, { exact: false }).first();
+  await expect(error).toBeVisible();
+  // Rouge nopCommerce : rgb(228, 67, 75) pour .field-validation-error / .validation-summary-errors
+  await expect(error).toHaveCSS('color', /rgb\(2[0-9]{2}, \d+, \d+\)/);
+});
 
 // ---------- Compteurs panier ----------
 Then(/^le panier contient (\d+) articles?$/, async ({ topBar }, count: string) => {
@@ -114,10 +109,6 @@ Then('le panier est vide', async ({ cartPage }) => {
   await expect(cartPage.rows).toHaveCount(0);
 });
 
-Given('je sauvegarde la référence de cette commande', async ({ orderDetailsPage }) => {
-  // stocker orderReference() dans un contexte partagé
-});
-
 Given("je navigue vers l'historique de mes commandes", async ({ page }) => {
   await page.goto('/customer/orders');
 });
@@ -126,12 +117,22 @@ Given("je suis sur la page d'inscription", async ({ page }) => {
   await page.goto('/register');
 });
 
-Then('je suis connecté avec l\'email {string} et le mot de passe {string}',
-  async ({ loginPage, topBar, state }, email: string, password: string) => {
-    await topBar.goToLogin();          // clique sur le lien "Log in"
-    await loginPage.login(email, password);
-    state.lastEmail = email;
+Then(
+  "je suis connecté avec mail et mot de passe",
+  async ({ loginPage, topBar, state }) => {
+    await topBar.goToLogin(); // clique sur le lien "Log in"
+    await loginPage.login(USER.email, USER.password);
+    state.lastEmail = USER.email;
     await expect(topBar.logoutLink).toBeVisible();
   },
 );
 
+Then(
+  "je suis connecté sans adresse sauvegardée",
+  async ({ loginPage, topBar, state }) => {
+    await topBar.goToLogin(); // clique sur le lien "Log in"
+    await loginPage.login(USER2.email, USER2.password);
+    state.lastEmail = USER2.email;
+    await expect(topBar.logoutLink).toBeVisible();
+  },
+);

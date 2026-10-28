@@ -1,5 +1,5 @@
-import { expect, Page } from '@playwright/test';
-import { TopBar } from '../../pom/topbar.page'
+import { expect } from '@playwright/test';
+import { TopBar } from '../../pom/topbar.page';
 import { LoginPage } from '../../pom/login.page';
 import { CartPage } from '../../pom/cart.page';
 import { CheckoutPage } from '../../pom/checkout.page';

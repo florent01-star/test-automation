@@ -1,9 +1,10 @@
 # language: fr
+@mode:serial
 Fonctionnalité: Détail d'une commande
 
   Contexte:
     Etant donné que je suis sur la page d'accueil
-    Et que je suis connecté avec l'email "testflorent2@gmail.com" et le mot de passe "Tosca1234!"
+    Et que je suis connecté avec mail et mot de passe
     Et que je suis sur la page du panier
     Et que je supprime tous les articles du panier
 

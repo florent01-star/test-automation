@@ -27,8 +27,6 @@ export class ProductDetailsPage {
       .click();
   }
 
-  
-
   async addToCart(quantity = 1) {
     await this.quantity.fill(String(quantity));
     await this.addToCartButton.click();
@@ -36,8 +34,6 @@ export class ProductDetailsPage {
   }
 
   productRow(name: string): Locator {
-  return this.page
-    .locator('.data-table tbody tr')
-    .filter({ hasText: name });
-}
+    return this.page.locator('.data-table tbody tr').filter({ hasText: name });
+  }
 }

@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 
 export class CartPage {
   readonly page: Page;
@@ -33,7 +33,10 @@ export class CartPage {
     //this.total = page.locator('.cart-total .order-total .product-price');
     //this.discountLine = this.page.locator('tr', { hasText: 'Discount' });
     this.subTotal = page.getByRole('row', { name: 'Sub-Total' }).getByRole('cell').nth(1);
-    this.total = this.page.getByRole('row', { name: /^Total/ }).getByRole('cell').nth(1);
+    this.total = this.page
+      .getByRole('row', { name: /^Total/ })
+      .getByRole('cell')
+      .nth(1);
     this.discountLine = this.page.getByRole('row', { name: /Discount/ });
     this.couponInput = page.locator('input[name="discountcouponcode"]');
     this.applyCouponButton = page.locator('input[name="applydiscountcouponcode"]');
@@ -41,13 +44,15 @@ export class CartPage {
     this.addGiftCardButton = page.locator('input[name="applygiftcardcouponcode"]');
     this.countrySelect = page.locator('#CountryId');
     this.zipInput = page.locator('#ZipPostalCode');
-    this.estimateShippingButton = page.locator('input[name="estimateshipping"], #estimate-shipping-button');
+    this.estimateShippingButton = page.locator(
+      'input[name="estimateshipping"], #estimate-shipping-button',
+    );
     this.shippingOptions = page.locator('.shipping-results li, .shipping-option');
     this.messages = page.locator('.message-error, .message, .coupon-box .message');
   }
 
   async goto() {
-    await this.page.goto('https://demowebshop.tricentis.com/cart');
+    await this.page.goto('/cart');
   }
 
   lineTotal(productName: string): Locator {
@@ -55,27 +60,27 @@ export class CartPage {
   }
 
   // CartPage
-row(productName: string): Locator {
-  return this.page.locator('tr.cart-item-row', { hasText: productName });
-}
+  row(productName: string): Locator {
+    return this.page.locator('tr.cart-item-row', { hasText: productName });
+  }
 
-attributes(productName: string): Locator {
-  return this.row(productName).locator('div.attributes');
-}
+  attributes(productName: string): Locator {
+    return this.row(productName).locator('div.attributes');
+  }
 
-async attributesText(productName: string): Promise<string> {
-  return (await this.row(productName).locator('.attributes').innerText());
-}
+  async attributesText(productName: string): Promise<string> {
+    return await this.row(productName).locator('.attributes').innerText();
+  }
 
-unitPrice(productName: string): Locator {
-  return this.row(productName).locator('span.product-unit-price');
-}
+  unitPrice(productName: string): Locator {
+    return this.row(productName).locator('span.product-unit-price');
+  }
 
-async attributeLine(productName: string, label: string): Promise<string> {
-  const text = await this.attributes(productName).innerText();
-  const line = text.split('\n').find(l => l.trim().startsWith(label));
-  return line?.split(':')[1]?.trim() ?? '';
-}
+  async attributeLine(productName: string, label: string): Promise<string> {
+    const text = await this.attributes(productName).innerText();
+    const line = text.split('\n').find((l) => l.trim().startsWith(label));
+    return line?.split(':')[1]?.trim() ?? '';
+  }
 
   async quantityOf(productName: string): Promise<number> {
     const value = await this.row(productName).locator('input.qty-input').inputValue();
@@ -97,7 +102,7 @@ async attributeLine(productName: string, label: string): Promise<string> {
     await this.checkoutButton.click();
   }
 
-    async applyCoupon(code: string) {
+  async applyCoupon(code: string) {
     await this.couponInput.fill(code);
     await this.applyCouponButton.click();
   }
@@ -117,17 +122,15 @@ async attributeLine(productName: string, label: string): Promise<string> {
     return this.rows.locator('.product a.product-name, .product-name').allInnerTexts();
   }
 
- async removeAll() {
-  const boxes = this.page.locator('input[name="removefromcart"]');
-  const count = await boxes.count();
+  async removeAll() {
+    const boxes = this.page.locator('input[name="removefromcart"]');
+    const count = await boxes.count();
 
-  if (count === 0) return;   // panier déjà vide, rien à faire ✅
+    if (count === 0) return; // panier déjà vide, rien à faire ✅
 
-  for (let i = 0; i < count; i++) {
-    await boxes.nth(i).check();
+    for (let i = 0; i < count; i++) {
+      await boxes.nth(i).check();
+    }
+    await this.updateButton.click();
   }
-  await this.updateButton.click();
 }
-
-}
-

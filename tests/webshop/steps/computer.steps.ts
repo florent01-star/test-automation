@@ -1,9 +1,7 @@
-import { test, expect, Given, When, Then } from './fixtures';
-
-
+import { expect, Given, When, Then } from './fixtures';
 
 // ─── Ouverture de la page ───────────────────────────────────────────
-Given("je suis sur la page {string}", async ({ computerPage }, url: string) => {
+Given('je suis sur la page computer', async ({ computerPage }) => {
   await computerPage.open(); // ou goto(url) si tu veux paramétrer
 });
 
@@ -34,7 +32,7 @@ When("je configure l'ordinateur avec:", async ({ computerPage }, dataTable) => {
   }
 });
 
-When("je mets la quantite a {int}", async ({ computerPage }, qty: number) => {
+When('je mets la quantite a {int}', async ({ computerPage }, qty: number) => {
   await computerPage.setQty(qty);
 });
 
@@ -44,30 +42,27 @@ When("j'ajoute l'ordinateur au panier", async ({ computerPage }) => {
 });
 
 // ─── Vérifications ──────────────────────────────────────────────────
-Then("le prix affiche est {string}", async ({ computerPage }, expected: string) => {
+Then('le prix affiche est {string}', async ({ computerPage }, expected: string) => {
   await expect(computerPage.priceLabel).toHaveText(expected);
 });
 
-Then("le produit {string} est dans le panier", async ({ cartPage }, productName: string) => {
+Then('le produit {string} est dans le panier', async ({ cartPage }, productName: string) => {
   await cartPage.goto();
   await expect(cartPage.row(productName)).toBeVisible();
 });
 
-Then(
-  'je retrouve les options choisies',
-  async ({ cartPage }, dataTable ) => {
-    const data = dataTable.rowsHash() as Record<string, string>;
+Then('je retrouve les options choisies', async ({ cartPage }, dataTable) => {
+  const data = dataTable.rowsHash() as Record<string, string>;
 
-    for (const [attribute, expected] of Object.entries(data)) {
-      if (!expected || expected.toLowerCase() === 'aucun') continue;
+  for (const [attribute, expected] of Object.entries(data)) {
+    if (!expected || expected.toLowerCase() === 'aucun') continue;
 
-      const expectedName = expected.replace(/\s*\[\+[\d.,]+\]\s*/i, '').trim();
+    const expectedName = expected.replace(/\s*\[\+[\d.,]+\]\s*/i, '').trim();
 
-      const line = await cartPage.attributeLine('Build your own computer', attribute);
-      expect(line, `Attribut ${attribute}`).toContain(expectedName);
-    }
+    const line = await cartPage.attributeLine('Build your own computer', attribute);
+    expect(line, `Attribut ${attribute}`).toContain(expectedName);
   }
-);
+});
 
 Then('le sous-total du panier est {string}', async ({ cartPage }, expected: string) => {
   if (!cartPage.page.url().includes('/cart')) {

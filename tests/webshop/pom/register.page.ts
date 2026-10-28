@@ -27,12 +27,12 @@ export class RegisterPage {
 
   async fillForm(data: {
     gender?: 'Male' | 'Female';
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}) {
-  if (data.gender === 'Female') await this.genderFemale.check();
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }) {
+    if (data.gender === 'Female') await this.genderFemale.check();
     else await this.genderMale.check();
     await this.firstName.fill(data.firstName);
     await this.lastName.fill(data.lastName);

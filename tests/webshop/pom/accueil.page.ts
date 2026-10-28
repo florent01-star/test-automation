@@ -10,7 +10,7 @@ export class AccueilPage {
   }
 
   async goto() {
-    await this.page.goto('https://demowebshop.tricentis.com/');
+    await this.page.goto('/');
   }
 
   async clickRegister() {

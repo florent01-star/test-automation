@@ -14,12 +14,12 @@ export type BillingAddress = {
 export const DEFAULT_ADDRESS: BillingAddress = {
   firstName: 'Flo',
   lastName: 'Novembre',
-  email: 'florent.novembre@yahoo.fr',
+  email: 'testflorent2@gmail.com',
   country: 'France',
-  city: 'Aix-les-Bains',
-  address1: '8 Boulevard Robert Barrier',
+  city: 'Lyon',
+  address1: '8 Rue du test',
   zip: '73100',
-  phone: '0761230915',
+  phone: '0761345612',
 };
 
 export type CardInfo = {
@@ -27,7 +27,7 @@ export type CardInfo = {
   holder: string;
   number: string;
   expireMonth: string; // '04'
-  expireYear: string;  // '2028'
+  expireYear: string; // '2028'
   code: string;
 };
 
@@ -61,38 +61,47 @@ export class CheckoutPage {
     this.billingSelect = page.locator('#billing-address-select');
     this.paymentInfoBlock = page.locator('#checkout-step-payment-info');
     this.purchaseOrderNumber = page.locator('#PurchaseOrderNumber');
-    this.confirmButton = page.locator('#confirm-order-buttons-container .confirm-order-next-step-button');
+    this.confirmButton = page.locator(
+      '#confirm-order-buttons-container .confirm-order-next-step-button',
+    );
     this.orderSummary = page.locator('#checkout-confirm-order-load');
-    this.orderTotal = page.locator('#checkout-confirm-order-load .cart-total .order-total .product-price');
+    this.orderTotal = page.locator(
+      '#checkout-confirm-order-load .cart-total .order-total .product-price',
+    );
     this.paymentFee = page
-      .locator('#checkout-confirm-order-load .cart-total tr', { hasText: 'Payment method additional fee' })
+      .locator('#checkout-confirm-order-load .cart-total tr', {
+        hasText: 'Payment method additional fee',
+      })
       .locator('.product-price');
-    this.errors = page.locator('.message-error, .validation-summary-errors, .field-validation-error');
+    this.errors = page.locator(
+      '.message-error, .validation-summary-errors, .field-validation-error',
+    );
   }
 
   // ---------- Commun : clic sur "Continue" d'une étape ----------
-  async clickContinue(stepSelector = '') {
-  // 1. Attendre la fin des loaders AJAX
-  const loading = this.page.getByText('Loading next step...').locator('visible=true');
-  await expect.poll(async () => await loading.count(), { timeout: 15_000 }).toBe(0);
+  async clickContinue() {
+    // 1. Attendre la fin des loaders AJAX
+    const loading = this.page.getByText('Loading next step...').locator('visible=true');
+    await expect.poll(async () => await loading.count(), { timeout: 15_000 }).toBe(0);
 
-  // 2. Premier bouton "Continue" VISIBLE
-  const button = this.page
-    .getByRole('button', { name: 'Continue' })
-    .locator('visible=true')
-    .first();
+    // 2. Premier bouton "Continue" VISIBLE
+    const button = this.page
+      .getByRole('button', { name: 'Continue' })
+      .locator('visible=true')
+      .first();
 
-  await expect(button).toBeVisible();
-  await expect(button).toBeEnabled();
-  await button.click();
+    await expect(button).toBeVisible();
+    await expect(button).toBeEnabled();
+    await button.click();
 
-  // 3. Attendre le chargement de l'étape suivante
-  await expect.poll(async () => await loading.count(), { timeout: 15_000 }).toBe(0);
-}
+    // 3. Attendre le chargement de l'étape suivante
+    await expect.poll(async () => await loading.count(), { timeout: 15_000 }).toBe(0);
+  }
 
   // ---------- Étape 1 : facturation ----------
   async continueBilling() {
-    await this.clickContinue(STEP.billing);
+    //await this.clickContinue(STEP.billing);
+    await this.clickContinue();
   }
 
   /** Sélectionne l'adresse sauvegardée (présélectionnée par défaut). Ne clique PAS sur Continue. */
@@ -109,7 +118,9 @@ export class CheckoutPage {
     await this.page.locator('#BillingNewAddress_FirstName').fill(address.firstName);
     await this.page.locator('#BillingNewAddress_LastName').fill(address.lastName);
     await this.page.locator('#BillingNewAddress_Email').fill(address.email);
-    await this.page.locator('#BillingNewAddress_CountryId').selectOption({ label: address.country });
+    await this.page
+      .locator('#BillingNewAddress_CountryId')
+      .selectOption({ label: address.country });
     await this.page.locator('#BillingNewAddress_City').fill(address.city);
     await this.page.locator('#BillingNewAddress_Address1').fill(address.address1);
     await this.page.locator('#BillingNewAddress_ZipPostalCode').fill(address.zip);
@@ -129,11 +140,11 @@ export class CheckoutPage {
   }
 
   async chooseShippingMethod(name: string) {
-  await this.page
-    .getByRole('radio', { name })   // ex: 'Ground (10.00)'
-    .check();
-  await this.continueShippingMethod();
-}
+    await this.page
+      .getByRole('radio', { name }) // ex: 'Ground (10.00)'
+      .check();
+    await this.continueShippingMethod();
+  }
 
   // ---------- Étape 4 : moyen de paiement ----------
   async continuePaymentMethod() {
@@ -141,7 +152,9 @@ export class CheckoutPage {
   }
 
   async choosePaymentMethod(name: string) {
-    const option = this.page.locator('#checkout-payment-method-load .method-list li', { hasText: name });
+    const option = this.page.locator('#checkout-payment-method-load .method-list li', {
+      hasText: name,
+    });
     await option.waitFor({ state: 'visible' });
     await option.getByRole('radio').check();
     await this.continuePaymentMethod();
@@ -188,9 +201,16 @@ export class CheckoutPage {
   // ---------- Générique ----------
   /** Clique sur le "Continue" de l'étape actuellement ouverte (step générique Gherkin) */
   async continueCurrentStep() {
-    await this.page.getByText('Loading next step...').waitFor({ state: 'hidden' }).catch(() => {});
+    await this.page
+      .getByText('Loading next step...')
+      .waitFor({ state: 'hidden' })
+      .catch(() => {});
     const button = this.page
-      .locator(Object.values(STEP).map((s) => `${s} input[value="Continue"]:visible`).join(', '))
+      .locator(
+        Object.values(STEP)
+          .map((s) => `${s} input[value="Continue"]:visible`)
+          .join(', '),
+      )
       .first();
     await expect(button).toBeEnabled();
     await button.click();

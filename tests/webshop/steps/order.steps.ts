@@ -7,7 +7,10 @@ import { DEFAULT_ADDRESS } from '../pom/checkout.page';
 
 Given(
   "j'ai passé une commande avec l'article {string}",
-  async ({ topBar, loginPage, productPage, cartPage, checkoutPage, completedPage, state }, article: string) => {
+  async (
+    { topBar, loginPage, productPage, cartPage, checkoutPage, completedPage, state },
+    article: string,
+  ) => {
     await ensureLoggedIn({ topBar, loginPage });
     await emptyCart(cartPage);
 
@@ -55,9 +58,12 @@ When(
 
 // ---------- Purchase Order ----------
 
-When('je renseigne le numéro de bon de commande {string}', async ({ checkoutPage }, num: string) => {
-  await checkoutPage.fillPurchaseOrder(num);
-});
+When(
+  'je renseigne le numéro de bon de commande {string}',
+  async ({ checkoutPage }, num: string) => {
+    await checkoutPage.fillPurchaseOrder(num);
+  },
+);
 
 // ---------- Livraison / paiement (utilisés aussi par payment-method.feature) ----------
 
@@ -86,7 +92,10 @@ Then(
   },
 );
 
-Then('le statut de la commande est {string}', async ({ completedPage, orderDetailsPage }, statut: string) => {
-  await completedPage.openDetails();
-  await expect(orderDetailsPage.orderStatus).toContainText(statut);
-});
+Then(
+  'le statut de la commande est {string}',
+  async ({ completedPage, orderDetailsPage }, statut: string) => {
+    await completedPage.openDetails();
+    await expect(orderDetailsPage.orderStatus).toContainText(statut);
+  },
+);
