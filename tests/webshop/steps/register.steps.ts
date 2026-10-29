@@ -1,11 +1,11 @@
-import { USER, USER2 } from './helpers/env';
+import { USER } from './helpers/env';
 import { expect, Given, When, Then } from './fixtures';
 
 const uniqueEmail = (prefix = 'florent.test') =>
   `${prefix}+${Date.now()}${Math.floor(Math.random() * 1000)}@example.com`;
 
 // Données valides par défaut ; chaque step surcharge uniquement ce qui l'intéresse
-const base = { firstName: 'Flo', lastName: 'Novembre', password: 'password' };
+const base = { firstName: 'Flo', lastName: 'Test', password: 'password' };
 
 Given("que je suis sur la page d'inscription", async ({ accueilPage, registerPage, topBar }) => {
   await accueilPage.goto();

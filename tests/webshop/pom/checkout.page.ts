@@ -13,12 +13,12 @@ export type BillingAddress = {
 
 export const DEFAULT_ADDRESS: BillingAddress = {
   firstName: 'Flo',
-  lastName: 'Novembre',
+  lastName: 'Test',
   email: 'testflorent2@gmail.com',
   country: 'France',
   city: 'Lyon',
   address1: '8 Rue du test',
-  zip: '73100',
+  zip: '69100',
   phone: '0761345612',
 };
 

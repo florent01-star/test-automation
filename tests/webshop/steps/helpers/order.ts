@@ -4,9 +4,7 @@ import { LoginPage } from '../../pom/login.page';
 import { CartPage } from '../../pom/cart.page';
 import { CheckoutPage } from '../../pom/checkout.page';
 import { CheckoutCompletedPage } from '../../pom/checkout-completed.page';
-
-export const USER_EMAIL = 'testflorent2@gmail.com';
-export const PASSWORD = 'Tosca1234!';
+import { USER } from '../helpers/env';
 
 type LoginDeps = {
   topBar: TopBar;
@@ -16,7 +14,7 @@ type LoginDeps = {
 export async function ensureLoggedIn({ topBar, loginPage }: LoginDeps): Promise<void> {
   if (!(await topBar.isLoggedIn())) {
     await loginPage.goto();
-    await loginPage.login(USER_EMAIL, PASSWORD);
+    await loginPage.login(USER.email, USER.password);
   }
 }
 
