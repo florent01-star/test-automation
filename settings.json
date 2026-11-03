@@ -1,0 +1,7 @@
+{
+  "cucumber.glue": "tests/webshop/steps/**/*.ts",
+  "cucumber.features": "tests/webshop/e2e/**/*.feature",
+  "files.watcherExclude": {
+    "**/.features-gen/**": true
+  }
+}
